@@ -1,6 +1,7 @@
 package folder
 
 import (
+	"fmt"
 	"github.com/gofrs/uuid"
 	"strings"
 )
@@ -23,19 +24,30 @@ func (f *driver) GetFoldersByOrgID(orgID uuid.UUID) []Folder {
 }
 
 func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) []Folder {
-	// Your code here...
+	folderExists := false
 	folders := GetAllFolders()
-
 	var childFolders []Folder
-	for _, f := range folders {
-		folderPaths := strings.Split(f.Paths, ".")
-		for _, path := range folderPaths {
-			// Check if the path contains the folder name
-			// And check if the folder isn't the last one in the tree as this would not be a child folder
-			if path == name && path != folderPaths[len(folderPaths)-1] {
-				childFolders = append(childFolders, f)
+	for _, folder := range folders {
+		folderPaths := strings.Split(folder.Paths, ".")
+		for _, folderPath := range folderPaths {
+			if folderPath == name {
+				folderExists = true
+				if folder.OrgId != orgID {
+					fmt.Println("Error: Folder does not exist in the specified organization")
+					return nil
+				}
+				if folderPath == folderPaths[len(folderPaths)-1] {
+					// Folder is the last node in the tree
+					break
+				}
+				childFolders = append(childFolders, folder)
 			}
 		}
 	}
-	return childFolders
+	if folderExists {
+		return childFolders
+	} else {
+		fmt.Println("Error: Folder does not exist")
+		return nil
+	}
 }

@@ -12,7 +12,13 @@ import (
 func Test_folder_GetFoldersByOrgID(t *testing.T) {
 	// Setup test parameters
 	orgID := uuid.FromStringOrNil(folder.DefaultOrgID)
-	allFolders := folder.GetAllFolders()
+	folders := folder.GetAllFolders()
+
+	var test1Want = []folder.Folder{
+		{"clear-supergran", orgID, "stunning-horridus.sacred-moonstar.nearby-maestro.dashing-forearm.clear-supergran"},
+		{"related-kitty", orgID, "stunning-horridus.sacred-moonstar.nearby-maestro.dashing-forearm.related-kitty"},
+		{"organic-hulk", orgID, "stunning-horridus.sacred-moonstar.nearby-maestro.dashing-forearm.organic-hulk"},
+	}
 
 	t.Parallel()
 	tests := [...]struct {
@@ -21,7 +27,11 @@ func Test_folder_GetFoldersByOrgID(t *testing.T) {
 		folders []folder.Folder
 		want    []folder.Folder
 	}{
-		{"creative", orgID, allFolders, []folder.Folder(nil)},
+		{"dashing-forearm", orgID, folders, test1Want},             // Find 3 subfolders
+		{"dashing-forearm", uuid.Must(uuid.NewV4()), folders, nil}, // Subfolder in wrong org
+		{"does_not_exist", uuid.Must(uuid.NewV4()), folders, nil},  // Folder does not exist
+		{"creative-scalphunter", orgID, folders, nil},              // Top level folder
+		{"merry-mega-man", orgID, folders, nil},                    // Bottom level folder
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

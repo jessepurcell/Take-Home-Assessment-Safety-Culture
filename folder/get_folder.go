@@ -1,7 +1,7 @@
 package folder
 
 import (
-	"fmt"
+	"errors"
 	"github.com/gofrs/uuid"
 	"strings"
 )
@@ -23,7 +23,7 @@ func (f *driver) GetFoldersByOrgID(orgID uuid.UUID) []Folder {
 	return res
 }
 
-func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) []Folder {
+func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, error) {
 	folderExists := false
 	folders := GetAllFolders()
 	var childFolders []Folder
@@ -33,8 +33,7 @@ func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) []Folder {
 			if folderPath == name {
 				folderExists = true
 				if folder.OrgId != orgID {
-					fmt.Println("Error: Folder does not exist in the specified organization")
-					return nil
+					return nil, errors.New("folder does not exist in the specified organization")
 				}
 				if folderPath == folderPaths[len(folderPaths)-1] {
 					// Folder is the last node in the tree
@@ -45,9 +44,7 @@ func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) []Folder {
 		}
 	}
 	if folderExists {
-		return childFolders
-	} else {
-		fmt.Println("Error: Folder does not exist")
-		return nil
+		return childFolders, nil
 	}
+	return nil, errors.New("folder does not exist")
 }

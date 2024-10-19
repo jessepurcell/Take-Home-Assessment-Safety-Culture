@@ -29,7 +29,7 @@ func Test_folder_GetFoldersByOrgID(t *testing.T) {
 	}{
 		{"dashing-forearm", orgID, folders, test1Want},             // Find 3 subfolders
 		{"dashing-forearm", uuid.Must(uuid.NewV4()), folders, nil}, // Subfolder in wrong org
-		{"does_not_exist", uuid.Must(uuid.NewV4()), folders, nil},  // Folder does not exist
+		{"does_not_exist", orgID, folders, nil},                    // Folder does not exist
 		{"creative-scalphunter", orgID, folders, nil},              // Top level folder
 		{"merry-mega-man", orgID, folders, nil},                    // Bottom level folder
 	}
@@ -37,7 +37,7 @@ func Test_folder_GetFoldersByOrgID(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			f := folder.NewDriver(tt.folders)
 			//orgFolder := f.GetFoldersByOrgID(tt.orgID)
-			subFolders := f.GetAllChildFolders(tt.orgID, tt.name)
+			subFolders, _ := f.GetAllChildFolders(tt.orgID, tt.name)
 			assert.Equal(t, tt.want, subFolders)
 		})
 	}

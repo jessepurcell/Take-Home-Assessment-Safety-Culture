@@ -25,7 +25,7 @@ func (f *driver) GetFoldersByOrgID(orgID uuid.UUID) []Folder {
 
 func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, error) {
 	folderExists := false
-	folders := GetAllFolders()
+	folders := f.folders
 	var childFolders []Folder
 	for _, folder := range folders {
 		folderPaths := strings.Split(folder.Paths, ".")

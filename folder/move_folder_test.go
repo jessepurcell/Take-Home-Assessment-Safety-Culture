@@ -7,7 +7,7 @@ import (
 )
 
 func Test_folder_MoveFolder(t *testing.T) {
-	folders := folder.GetDataFromFile("move_folder_test.json")
+	folders := folder.GetDataFromFile("move_test_data.json")
 
 	t.Parallel()
 	tests := [...]struct {

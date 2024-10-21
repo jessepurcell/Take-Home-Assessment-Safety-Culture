@@ -131,6 +131,34 @@ func GetSampleData() []Folder {
 	return folders
 }
 
+func GetDataFromFile(f string) []Folder {
+	_, filename, _, _ := runtime.Caller(0)
+	fmt.Println(filename)
+	basePath := filepath.Dir(filename)
+	filePath := filepath.Join(basePath, f)
+
+	fmt.Println(filePath)
+
+	file, err := os.Open(filePath)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	jsonByte, err := io.ReadAll(file)
+	if err != nil {
+		panic(err)
+	}
+
+	folders := []Folder{}
+	err = json.Unmarshal(jsonByte, &folders)
+	if err != nil {
+		panic(err)
+	}
+
+	return folders
+}
+
 func WriteSampleData(data interface{}) {
 	b := MarshalJson(data)
 	_, filename, _, _ := runtime.Caller(0)

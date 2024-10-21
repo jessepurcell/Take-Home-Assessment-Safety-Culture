@@ -7,7 +7,7 @@ import (
 
 func (f *driver) MoveFolder(name string, dst string) ([]Folder, error) {
 
-	folders := GetAllFolders()
+	folders := f.folders
 
 	var sourceFolder, destinationFolder *Folder
 	for i := range folders {

@@ -8,9 +8,31 @@ import (
 	"github.com/gofrs/uuid"
 )
 
+func Test_folder_GetAllFolders(t *testing.T) {
+	// Setup test parameters
+	//folders := folder.GetDataFromFile("get_test_data.json")
+
+	t.Parallel()
+	tests := [...]struct {
+		name    string
+		orgID   uuid.UUID
+		folders []folder.Folder
+		want    []folder.Folder
+	}{}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			//f := folder.NewDriver(tt.folders)
+			//get := f.GetFoldersByOrgID(tt.orgID)
+			//assert.Equal(t, tt.want, get)
+		})
+	}
+}
+
 // feel free to change how the unit test is structured
 func Test_folder_GetFoldersByOrgID(t *testing.T) {
 	// Setup test parameters
+	folders := folder.GetDataFromFile("get_test_data.json")
+
 	t.Parallel()
 	tests := [...]struct {
 		name    string
@@ -18,7 +40,9 @@ func Test_folder_GetFoldersByOrgID(t *testing.T) {
 		folders []folder.Folder
 		want    []folder.Folder
 	}{
-		// TODO: your tests here
+		{"org_test_1", uuid.FromStringOrNil("c1556e17-b7c0-45a3-a6ae-9546248fb17a"), folders, folder.GetDataFromFile("get_org_1.json")},
+		{"org_test_2", uuid.FromStringOrNil("b504a1fc-6979-4a93-ab77-400ce86de1e5"), folders, folder.GetDataFromFile("get_org_2.json")},
+		{"org_test_3", uuid.FromStringOrNil(""), folders, []folder.Folder{}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

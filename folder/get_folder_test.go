@@ -9,23 +9,12 @@ import (
 )
 
 func Test_folder_GetAllFolders(t *testing.T) {
-	// Setup test parameters
-	//folders := folder.GetDataFromFile("get_test_data.json")
-
-	t.Parallel()
-	tests := [...]struct {
-		name    string
-		orgID   uuid.UUID
-		folders []folder.Folder
-		want    []folder.Folder
-	}{}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			//f := folder.NewDriver(tt.folders)
-			//get := f.GetFoldersByOrgID(tt.orgID)
-			//assert.Equal(t, tt.want, get)
-		})
-	}
+	t.Run(t.Name(), func(t *testing.T) {
+		expected := folder.GenerateData() // Generate test data
+		folder.WriteSampleData(expected)  // Write test data to file
+		actual := folder.GetAllFolders()  // Read test data from file
+		assert.Equal(t, expected, actual)
+	})
 }
 
 // feel free to change how the unit test is structured

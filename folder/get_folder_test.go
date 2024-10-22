@@ -68,10 +68,10 @@ func Test_folder_GetAllChildFolders(t *testing.T) {
 	}{
 		{"alpha", orgID, folders, folder.GetDataFromFile("get_folder_test_1.json"), ""},
 		{"bravo", orgID, folders, folder.GetDataFromFile("get_folder_test_2.json"), ""},
-		{"charlie", orgID, folders, []folder.Folder(nil), ""},
-		{"echo", orgID, folders, []folder.Folder(nil), ""},
-		{"invalid_folder", orgID, folders, []folder.Folder(nil), "folder does not exist"},
-		{"foxtrot", orgID, folders, []folder.Folder(nil), "folder does not exist in the specified organization"},
+		{"charlie", orgID, folders, []folder.Folder{}, ""},
+		{"echo", orgID, folders, []folder.Folder{}, ""},
+		{"invalid_folder", orgID, folders, []folder.Folder{}, "folder does not exist"},
+		{"foxtrot", orgID, folders, []folder.Folder{}, "folder does not exist in the specified organization"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -26,14 +26,14 @@ func (f *driver) GetFoldersByOrgID(orgID uuid.UUID) []Folder {
 func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, error) {
 	folderExists := false
 	folders := f.folders
-	var childFolders []Folder
+	var childFolders = []Folder{}
 	for _, folder := range folders {
 		folderPaths := strings.Split(folder.Paths, ".")
 		for _, folderPath := range folderPaths {
 			if folderPath == name {
 				folderExists = true
 				if folder.OrgId != orgID {
-					return nil, errors.New("folder does not exist in the specified organization")
+					return []Folder{}, errors.New("folder does not exist in the specified organization")
 				}
 				if folderPath == folderPaths[len(folderPaths)-1] {
 					// Folder is the last node in the tree
@@ -46,5 +46,5 @@ func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, err
 	if folderExists {
 		return childFolders, nil
 	}
-	return nil, errors.New("folder does not exist")
+	return []Folder{}, errors.New("folder does not exist")
 }
